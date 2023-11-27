@@ -6,14 +6,15 @@ use Carbon\Carbon;
 use App\Models\Admin;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
+use App\Models\VendorsBankDetail;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\VendorsBankDetail;
-use App\Models\VendorsBusinessDetail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Redirect;
+use App\Models\VendorsBusinessDetail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -30,7 +31,6 @@ class VendorController extends Controller
             $data = $request->all();
             // logger($data);
             // echo "<pre>"; print_r($data);
-            dd($data);
             // Validate Vendor
             $rules = array(
                 'name' => 'required',
@@ -41,6 +41,9 @@ class VendorController extends Controller
                 'password_confirmation' => 'required|same:password',
                 'accept' => "required"
             );
+            if($request->data['email'] == Auth::guard('admin')->user()->email){
+                dd('fail');
+            }
 
             $validator = Validator::make($data,$rules);
 

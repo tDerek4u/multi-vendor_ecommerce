@@ -148,9 +148,9 @@ $(document).ready(function () {
                 accept :userAccept
             },
             success: function(data){
+                if(data.status == true) {
+                    window.location = data.url;
 
-                if(data.url) {
-                    window.location.herf = data.url;
                 }else{
                     $.each(data.errors, function(prefix, val){
                         $("#"+prefix+'_error').text(val[0]);

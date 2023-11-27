@@ -19,23 +19,23 @@ class UsersController extends Controller
     public function userRegister(Request $request){
         if($request->ajax()){
             $data = $request->all();
+            logger($data);
 
+            // $rules = array(
+            //     'name' => 'required',
+            //     'email' => 'required|email|unique:admins|unique:vendors|unique:users',
+            //     'mobile' => 'required|numeric|min:8|unique:admins|unique:vendors|unique:users',
+            //     'password' =>
+            //         'required|min:6|regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@]).*$/|confirmed',
+            //     'password_confirmation' => 'required|same:password',
+            //     'accept' => "required"
+            // );
 
-            $rules = array(
-                'name' => 'required',
-                'email' => 'required|email|unique:admins|unique:vendors|unique:users',
-                'mobile' => 'required|numeric|min:8|unique:admins|unique:vendors|unique:users',
-                'password' =>
-                    'required|min:6|regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@]).*$/|confirmed',
-                'password_confirmation' => 'required|same:password',
-                'accept' => "required"
-            );
+            // $validator = Validator::make($data,$rules);
 
-            $validator = Validator::make($data,$rules);
-
-            if($validator->fails()){
-                return response()->json(['errors'=>$validator->messages()]);
-            }
+            // if($validator->fails()){
+            //     return response()->json(['errors'=>$validator->messages()]);
+            // }
 
             //Register the user
             $user = new User;
@@ -47,8 +47,9 @@ class UsersController extends Controller
             $user->save();
 
             if(Auth::attempt(['email' => $data['email'] , 'password' => $data['password']])){
-                $redirectTo = url('cart');
+                $redirectTo = url('/cart');
                 return response()->json([
+                    'status' => true,
                     'url' => $redirectTo
                 ]);
             }

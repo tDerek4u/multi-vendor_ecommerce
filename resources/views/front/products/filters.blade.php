@@ -76,7 +76,7 @@
         @if($filterAvailable == "Yes")
         @if(count($filter['filter_values']) > 0)
         <div class="facet-filter-associates">
-            <h3 class="title-name">{{ $filter['filter_name'] }}</h3> Hi
+            <h3 class="title-name">{{ $filter['filter_name'] }}</h3> 
             <form class="facet-form" action="#" method="post">
                 <div class="associate-wrapper">
                     @foreach ($filter['filter_values'] as $value)

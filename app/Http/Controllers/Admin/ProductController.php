@@ -66,6 +66,7 @@ class ProductController extends Controller
 
     //add edit product
     public function addEditProduct(Request $request,$id = null){
+        logger($request->all());
         Session::put('page','products');
         if($id ==""){
             $title = "Add Product";
