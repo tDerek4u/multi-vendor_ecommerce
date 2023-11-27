@@ -124,7 +124,7 @@ ga('send', 'pageview')
 <script type="text/javascript" src="{{ url('front/js/app.js') }}"></script>
 <!-- Zoom -->
 <script type="text/javascript" src="{{ url('front/js/easyzoom.js') }}"></script>
-
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Sweet Alert 2-->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

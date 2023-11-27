@@ -113,7 +113,7 @@
                             </div>
                             <div class="u-s-m-b-45">
                                 <button class="button button-primary w-100 mb-1">Register</button>
-                                <span class="text-center mt-4 text-danger">Wait before until show success message !</span>
+    
                             </div>
 
                             <p class="login">Already registered? <a href="#">Sign In</a></p>

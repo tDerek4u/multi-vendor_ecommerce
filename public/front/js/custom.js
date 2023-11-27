@@ -151,6 +151,8 @@ $(document).ready(function () {
                 if(data.status == true) {
                     window.location = data.url;
 
+                    alert(data.message)
+
                 }else{
                     $.each(data.errors, function(prefix, val){
                         $("#"+prefix+'_error').text(val[0]);

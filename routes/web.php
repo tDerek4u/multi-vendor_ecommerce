@@ -201,6 +201,9 @@ Route::namespace('App\Http\Controllers\Front')->group(function(){
      // confirmation User account
      Route::get('user/confirm/{code}',[UsersController::class,'confirmUser']);
 
+      //user logout
+    Route::get('user/logout',[UsersController::class,'userLogout']);
+
     //Add to cart route
     Route::post('cart/add',[CartController::class,'addToCart']);
 
@@ -213,7 +216,8 @@ Route::namespace('App\Http\Controllers\Front')->group(function(){
     //delete cart
     Route::post('cart/delete',[CartController::class,'deleteCart']);
 
-    //
+
+
 
 });
 
