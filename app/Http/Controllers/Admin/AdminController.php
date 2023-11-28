@@ -324,25 +324,16 @@ class AdminController extends Controller
             $data = $request->all();
 
             $rules = [
-                'email' => 'required|email|max:255',
+                'email' => 'required|email|max:255|exixts:admins,vendors|',
                 'password' => 'required'
             ];
 
 
+            $validator = Validator::make($data,$rules);
 
-            $this->validate($request,$rules);
-
-            // if(Auth::guard('admin')->attempt(
-            //     [
-            //     'email' => $data['email'],
-            //     'password' => $data['password'],
-            //     'status' => 1]
-            //     )
-            // ){
-            //     return redirect('admin/dashboard');
-            // }else{
-            //     return redirect()->back()->with('error_message','Invalid Email or Password');
-            // }
+            if($validator->fails()){
+                return back()->with(['error_message' => 'Invalid Email or Password ! ']);
+            }
 
             if(Auth::guard('admin')->attempt(
                 [
@@ -371,6 +362,6 @@ class AdminController extends Controller
 
     public function logout(){
         Auth::guard('admin')->logout();
-        return redirect('admin/login');
+        return redirect('/');
     }
 }

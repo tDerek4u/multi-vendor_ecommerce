@@ -192,6 +192,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function(){
     // confirmation vendor account
     Route::get('vendor/confirm/{code}',[VendorController::class,'confirmVendor']);
 
+
      // User Login/Register
      Route::get('/user/login-register',[UsersController::class,'loginRegister']);
 
@@ -200,6 +201,9 @@ Route::namespace('App\Http\Controllers\Front')->group(function(){
 
      // confirmation User account
      Route::get('user/confirm/{code}',[UsersController::class,'confirmUser']);
+
+     //user login
+     Route::post('user/login',[UsersController::class,'userLogin']);
 
       //user logout
     Route::get('user/logout',[UsersController::class,'userLogout']);

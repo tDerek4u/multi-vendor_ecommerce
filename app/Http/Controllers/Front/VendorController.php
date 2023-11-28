@@ -26,6 +26,7 @@ class VendorController extends Controller
         return view('front.vendors.login_register');
     }
 
+
     public function vendorRegister(Request $request){
         if($request->isMethod('post')){
             $data = $request->all();
@@ -41,9 +42,12 @@ class VendorController extends Controller
                 'password_confirmation' => 'required|same:password',
                 'accept' => "required"
             );
-            if($request->data['email'] == Auth::guard('admin')->user()->email){
-                dd('fail');
-            }
+
+            // $adminEmail = Admin::select('email')->where('type','superadmin')->get()->toArray();
+            // if($data['email'] == $adminEmail){
+            //     $message = "Invalid Email or Password ! ";
+            //     Session::flash('success', __($message));
+            // }
 
             $validator = Validator::make($data,$rules);
 

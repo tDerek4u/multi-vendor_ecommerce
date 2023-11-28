@@ -23,11 +23,10 @@
 <!-- Account-Page -->
     <div class="page-account u-s-p-t-80">
         <div class="container " >
-            <div class="row  justify-content-center align-items-center" >
+            <div class="row d-flex">
                 <!-- Register -->
                 <div class="col-lg-6 " >
                     <div class="reg-wrapper">
-
                         @if(Session::has('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                            {{ Session::get('success') }}
@@ -36,6 +35,8 @@
                            </button>
                         </div>
                         @endif
+
+
 
                          @if(Session::has('success_message'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -60,7 +61,7 @@
                                 <span class="error text-danger">{{ $errors->first('name') }}</span>
                                 @endif
 
-                                
+
                             </div>
                             <div class="u-s-m-b-30">
                                 <label for="vendorMobile">Mobile
@@ -75,7 +76,7 @@
                                 <label for="vendorEmail">Email
                                     <span class="astk">*</span>
                                 </label>
-                                <input type="text" id="vendorEmail" class="text-field mb-3" name="email" placeholder="Vendor Email">
+                                <input type="text"  class="text-field mb-3" name="email" placeholder="Vendor Email">
                                 @if ($errors->has('email'))
                                 <span class="error text-danger">{{ $errors->first('email') }}</span>
                                 @endif
@@ -130,15 +131,18 @@
                 </div>
                 <!-- Register /- -->
 
-
-            </div>
-
-            <div class="row  justify-content-center align-items-center"  >
                 <!-- Login -->
                 <div class="col-lg-6">
                     <div class="login-wrapper">
-
-                            <form class="pt-3" action="{{ url('admin/login') }}" method="post" id="login-form" >
+                        @if(Session::has('error_message'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                           {{ Session::get('error_message') }}
+                           <button type="button" class="close " data-dismiss="alert" aria-label="Close">
+                               <span aria-hidden="true">&times;</span>
+                           </button>
+                        </div>
+                        @endif
+                            <form action="{{ url('admin/login') }}" method="post" id="login-form" >
                                 @csrf
                                 <h2 class="account-h2 u-s-m-b-20">Vendor Login</h2>
                                 <h6 class="account-h6 u-s-m-b-30">Welcome back! Sign in to your account.</h6>
@@ -146,13 +150,14 @@
                                     <label for="user-name-email">Email
                                         <span class="astk">*</span>
                                     </label>
-                                    <input type="text" id="email" name="email" class="text-field" placeholder="Vendor Email">
+                                    <input type="text" id="vendorEmail" name="email" class="text-field" placeholder="Vendor Email">
+
                                 </div>
                                 <div class="u-s-m-b-30">
                                     <label for="login-password">Password
                                         <span class="astk">*</span>
                                     </label>
-                                    <input type="password" name="password" class="text-field mb-3 form-control" placeholder="Vendor Password" id="myInput">
+                                    <input type="password" name="password" class="text-field mb-3 form-control vendorPassword" placeholder="Vendor Password" id="myInput">
 
                                     <input type="checkbox" class="fs-3" onclick="myFunction()">Show Password
                                 </div>
@@ -160,7 +165,6 @@
                                     <button class="button button-outline-secondary w-100">Login</button>
                                 </div>
                                 <p class="register mt-4">Not registered? <a href="#">Sign Up</a></p>
-
                         </form>
                     </div>
                 </div>

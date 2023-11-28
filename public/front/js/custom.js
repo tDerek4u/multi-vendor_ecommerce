@@ -117,6 +117,63 @@ $(document).ready(function () {
 
     });
 
+    $(".userLoginForm").submit(function(){
+
+        var userEmail = $("#useremail").val();
+        var userPassword = $("#userpassword").val();
+
+        $.ajax({
+            headers : {
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            },
+            type : 'POST',
+            url : 'http://127.0.0.1:8000/user/login',
+            data: {
+                email :userEmail,
+                password :userPassword,
+            },
+            success: function(data){
+                if(data.status == true) {
+                    let timerInterval;
+                    Swal.fire({
+                    title: data.message,
+                    html: "I will close in <b></b> seconds.",
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getPopup().querySelector("b");
+                        timerInterval = setInterval(() => {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                        }, 100);
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
+                    }).then((result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        window.location = data.url;
+                    }
+                    });
+
+                }else if(data.status == false){
+                    $("#error_message").html(data.message);
+                }else if(data.type == 'incorrect'){
+                    $("#error_message").html(data.message);
+                }else{
+                    $.each(data.errors, function(prefix, val){
+                        $("#"+'log_'+prefix+'_error').text(val[0]);
+                    });
+                }
+
+            },error: function(error){
+                console.log(error);
+            }
+        });
+    })
+
+
     $("#userRegisterForm").submit(function(){
 
         if ($('#accept').is(":checked"))
@@ -149,9 +206,7 @@ $(document).ready(function () {
             },
             success: function(data){
                 if(data.status == true) {
-                    window.location = data.url;
-
-                    alert(data.message)
+                    $("#success_message").html(data.message);
 
                 }else{
                     $.each(data.errors, function(prefix, val){
@@ -244,20 +299,20 @@ function myFunction_log_password_con() {
 }
 
 
-$(document).ready(function () {
+// $(document).ready(function () {
 
-    $('.register-form').show();
-    $('#login-form').hide();
+//     $('.register-form').show();
+//     $('#login-form').hide();
 
-    $('.register').click(function () {
-        $('.register-form').show();
-        $('#login-form').hide();
-    });
-    $('.login').click(function () {
-        $('.register-form').hide();
-        $('#login-form').show();
-    });
-});
+//     $('.register').click(function () {
+//         $('.register-form').show();
+//         $('#login-form').hide();
+//     });
+//     $('.login').click(function () {
+//         $('.register-form').hide();
+//         $('#login-form').show();
+//     });
+// });
 
 
 

@@ -24,16 +24,13 @@
     <!-- Account-Page -->
     <div class="page-account u-s-p-t-80">
         <div class="container ">
-            <div class="row  justify-content-center align-items-center">
+            <div class="row d-flex">
                 <!-- Register -->
                 <div class="col-lg-6 ">
                     <div class="reg-wrapper">
-
-
-
-                        @if (Session::has('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ Session::get('success') }}
+                        @if (Session::has('error_message'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ Session::get('error_message') }}
                                 <button type="button" class="close mt-2" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -41,19 +38,20 @@
                         @endif
 
                         @if (Session::has('success_message'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ Session::get('success_message') }}
-                                <button type="button" class="close mt-4" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ Session::get('success_message') }}
+                            <button type="button" class="close " data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
 
                         <form id="userRegisterForm" action="javascript:;" id="a" class="register-form ">
                             @csrf
                             <h2 class="account-h2 u-s-m-b-20">User Register</h2>
                             <h6 class="account-h6 u-s-m-b-30">Registering for this site allows you to access your order
                                 status and history.</h6>
+                            <h4 class="text-success" id="success_message"></h4> <br>
                             <div class="u-s-m-b-30">
                                 <label for="userName">Name
                                     <span class="astk">*</span>
@@ -113,7 +111,8 @@
                             </div>
                             <div class="u-s-m-b-45">
                                 <button class="button button-primary w-100 mb-1">Register</button>
-    
+                                <span class="text-center mt-4 text-danger">Wait before until show success message !</span>
+
                             </div>
 
                             <p class="login">Already registered? <a href="#">Sign In</a></p>
@@ -122,32 +121,31 @@
                 </div>
                 <!-- Register /- -->
 
-
-            </div>
-
-            <div class="row  justify-content-center align-items-center">
                 <!-- Login -->
                 <div class="col-lg-6">
                     <div class="login-wrapper">
 
-                        <form class="pt-3" action="javascript:;" id="login-form">
+                        <form class="userLoginForm" action="javascript:;" id="login-form">
+
                             @csrf
                             <h2 class="account-h2 u-s-m-b-20">User Login</h2>
                             <h6 class="account-h6 u-s-m-b-30">Welcome back! Sign in to your account.</h6>
+                            <h4 class="text-danger" id="error_message"></h4> <br>
                             <div class="u-s-m-b-30">
                                 <label for="user-name-email">Email
                                     <span class="astk">*</span>
                                 </label>
                                 <input type="text" id="useremail" name="useremail" class="text-field"
                                     placeholder="User Email">
+                                    <span class="text-danger" id="log_email_error"></span> <br>
                             </div>
                             <div class="u-s-m-b-30">
                                 <label for="login-password">Password
                                     <span class="astk">*</span>
                                 </label>
-                                <input type="password" name="userpassword" class="text-field mb-3 form-control"
+                                <input type="password" id="userpassword" name="userpassword" class="text-field mb-3 form-control"
                                     placeholder="User Password" id="myInput">
-
+                                    <span class="text-danger" id="log_password_error"></span> <br>
                                 <input type="checkbox" class="fs-3" onclick="myFunction()">Show Password
                             </div>
                             <div class="m-b-45">
