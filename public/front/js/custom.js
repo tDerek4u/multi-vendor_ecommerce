@@ -175,13 +175,13 @@ $(document).ready(function () {
 
 
     $("#userRegisterForm").submit(function(){
-
         if ($('#accept').is(":checked"))
         {
             var userAccept = "on"
         }else{
 
         }
+        $('.fa').addClass('fa-refresh fa-spin');
 
         var userName = $("#userName").val();
         var userMobile = $("#userMobile").val();
@@ -206,9 +206,11 @@ $(document).ready(function () {
             },
             success: function(data){
                 if(data.status == true) {
+                    $('.fa').removeClass('fa-refresh fa-spin');
                     $("#success_message").html(data.message);
 
                 }else{
+                    $('.fa').removeClass('fa-refresh fa-spin');
                     $.each(data.errors, function(prefix, val){
                         $("#"+prefix+'_error').text(val[0]);
                     });
@@ -219,6 +221,41 @@ $(document).ready(function () {
             }
         });
     })
+
+    //forgot password
+    $("#forgotForm").submit(function(){
+        $('.fa').addClass('fa-refresh fa-spin');
+
+
+        var userEmail = $("#forgot_email").val();
+
+        $.ajax({
+            headers : {
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            },
+            type : 'POST',
+            url : '/user/forgot-password',
+            data: {
+                email :userEmail,
+            },
+            success: function(data){
+                if(data.status == true) {
+                    $('.fa').removeClass('fa-refresh fa-spin');
+                    $("#success_message").html(data.message);
+
+                }else{
+                    $('.fa').removeClass('fa-refresh fa-spin');
+                    $.each(data.errors, function(prefix, val){
+                        $("#"+prefix+'_error').text(val[0]);
+                    });
+                }
+
+            },error: function(error){
+                console.log(error);
+            }
+        });
+    })
+
 
 });
 

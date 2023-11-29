@@ -199,8 +199,11 @@ Route::namespace('App\Http\Controllers\Front')->group(function(){
      // User Register
      Route::post('/user/register',[UsersController::class,'userRegister']);
 
+    //user forgot password
+    Route::match(['get','post'],'user/forgot-password',[UsersController::class,'forgotPassword']);
+
      // confirmation User account
-     Route::get('user/confirm/{code}',[UsersController::class,'confirmUser']);
+    Route::get('user/confirm/{code}',[UsersController::class,'confirmUser']);
 
      //user login
      Route::post('user/login',[UsersController::class,'userLogin']);

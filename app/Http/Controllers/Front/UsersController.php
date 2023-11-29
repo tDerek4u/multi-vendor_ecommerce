@@ -171,6 +171,32 @@ class UsersController extends Controller
         }
     }
 
+    //user forgot password
+    public function forgotPassword(Request $request){
+        if($request->ajax()){
+            $data = $request->all();
+
+            $rules = array(
+                'email' => 'required|email|exists:users',
+            );
+
+            $validator = Validator::make($data, $rules);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->messages()]);
+            }
+
+            $userDetails = User::where('email',$email)->first();
+            $new_password = 
+
+        }else{
+            return view('front.users.forgot_password');
+        }
+
+    }
+
+
+
     //user logout
     public function userLogout()
     {

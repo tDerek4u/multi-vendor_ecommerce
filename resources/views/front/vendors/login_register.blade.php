@@ -121,7 +121,7 @@
                                 @endif
                             </div>
                             <div class="u-s-m-b-45">
-                                <button class="button button-primary w-100 mb-3">Register</button>
+                                <button class="button button-primary w-100 mb-3">Register <i class="fa  " style="font-size: 15px;"></i></button>
                                 <span class="text-center mt-4 text-danger">Wait before until show success message !</span>
                             </div>
 

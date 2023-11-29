@@ -110,9 +110,7 @@
                                 <span class="text-danger" id="accept_error"></span>
                             </div>
                             <div class="u-s-m-b-45">
-                                <button class="button button-primary w-100 mb-1">Register</button>
-                                <span class="text-center mt-4 text-danger">Wait before until show success message !</span>
-
+                                <button class="button button-primary w-100 mb-1">Register <i class="fa  " style="font-size: 15px;"></i></button>
                             </div>
 
                             <p class="login">Already registered? <a href="#">Sign In</a></p>
@@ -126,7 +124,6 @@
                     <div class="login-wrapper">
 
                         <form class="userLoginForm" action="javascript:;" id="login-form">
-
                             @csrf
                             <h2 class="account-h2 u-s-m-b-20">User Login</h2>
                             <h6 class="account-h6 u-s-m-b-30">Welcome back! Sign in to your account.</h6>
@@ -147,6 +144,12 @@
                                     placeholder="User Password" id="myInput">
                                     <span class="text-danger" id="log_password_error"></span> <br>
                                 <input type="checkbox" class="fs-3" onclick="myFunction()">Show Password
+                                <div class="group-2 text-right">
+                                    <div class="page-anchor">
+                                        <a href="{{ url('user/forgot-password') }}">
+                                            <i class="fas fa-circle-o-notch u-s-m-r-9"></i>Lost your password?</a>
+                                    </div>
+                                </div>
                             </div>
                             <div class="m-b-45">
                                 <button class="button button-outline-secondary w-100">Login</button>

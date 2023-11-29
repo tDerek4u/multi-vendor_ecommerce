@@ -9,6 +9,7 @@
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">{{ $title }}</h4>
+                  <i class="fa  " style="font-size: 25px;"></i>
                   <p class="card-description">
                   </p>
                   <div class="table-responsive pt-3">

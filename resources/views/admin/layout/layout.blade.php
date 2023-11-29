@@ -23,6 +23,9 @@
   <link rel="stylesheet" href="{{ url('admin/css/vertical-layout-light/style.css') }}">
   <!-- endinject -->
   <link rel="shortcut icon" href="{{ url('admin/images/favicon.png') }}" />
+  //fontawesome
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 
   {{--  datatable
   <link rel="stylesheet" href="{{ url('admin/css/bootstrap.css') }}">

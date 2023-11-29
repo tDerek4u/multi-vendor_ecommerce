@@ -324,7 +324,7 @@ class AdminController extends Controller
             $data = $request->all();
 
             $rules = [
-                'email' => 'required|email|max:255|exixts:admins,vendors|',
+                'email' => 'required|email|max:255',
                 'password' => 'required'
             ];
 

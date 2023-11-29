@@ -41,6 +41,7 @@ $(document).ready(function(){
 
     // Update Admin Status
     $(document).on("click",".updateAdminStatus",function(){
+        $('.fa').addClass('fa-refresh fa-spin');
         var status = $(this).children("i").attr("status");
         var admin_id = $(this).attr("admin_id");
         $.ajax({
@@ -52,9 +53,11 @@ $(document).ready(function(){
             data : {status: status, admin_id : admin_id},
             success:function(resp){
                if(resp['status']==0){
+                $('.fa').removeClass('fa-refresh fa-spin');
                 $('#admin-'+admin_id).html("<i style='font-size:25px;' class ='mdi mdi-checkbox-blank-circle-outline' status='Inactive'> </i>");
 
                }else if(resp['status'] == 1){
+                $('.fa').removeClass('fa-refresh fa-spin');
                 $('#admin-'+admin_id).html("<i style='font-size:25px;' class ='mdi mdi-checkbox-blank-circle' status='Active'> </i>");
                }
             },error:function(){
@@ -97,7 +100,7 @@ $(document).ready(function(){
     //     }
     // })
 
-    //confirm deletion with sweet alert 
+    //confirm deletion with sweet alert
     // dynamic code flow Section/category delete
 
     $(document).on("click",".confirmDelete",function(){
