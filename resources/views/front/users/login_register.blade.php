@@ -132,7 +132,7 @@
                                 <label for="user-name-email">Email
                                     <span class="astk">*</span>
                                 </label>
-                                <input type="text" id="useremail" name="useremail" class="text-field"
+                                <input type="email" id="useremail" name="useremail" class="text-field"
                                     placeholder="User Email">
                                     <span class="text-danger" id="log_email_error"></span> <br>
                             </div>
@@ -140,7 +140,7 @@
                                 <label for="login-password">Password
                                     <span class="astk">*</span>
                                 </label>
-                                <input type="password" id="userpassword" name="userpassword" class="text-field mb-3 form-control"
+                                <input type="password" id="myInput" name="userpassword" class="text-field userPassword  mb-3 form-control"
                                     placeholder="User Password" id="myInput">
                                     <span class="text-danger" id="log_password_error"></span> <br>
                                 <input type="checkbox" class="fs-3" onclick="myFunction()">Show Password

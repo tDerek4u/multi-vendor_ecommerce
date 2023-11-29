@@ -120,7 +120,7 @@ $(document).ready(function () {
     $(".userLoginForm").submit(function(){
 
         var userEmail = $("#useremail").val();
-        var userPassword = $("#userpassword").val();
+        var userPassword = $(".userPassword").val();
 
         $.ajax({
             headers : {
@@ -241,8 +241,26 @@ $(document).ready(function () {
             success: function(data){
                 if(data.status == true) {
                     $('.fa').removeClass('fa-refresh fa-spin');
-                    $("#success_message").html(data.message);
 
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                          toast.onmouseenter = Swal.stopTimer;
+                          toast.onmouseleave = Swal.resumeTimer;
+                        }
+                      });
+                      Toast.fire({
+                        icon: "success",
+                        title: data.message
+                      });
+                    userEmail = "";
+
+                }else if(data.status == false){
+                    $("#error_message").html(data.message);
                 }else{
                     $('.fa').removeClass('fa-refresh fa-spin');
                     $.each(data.errors, function(prefix, val){
@@ -256,6 +274,66 @@ $(document).ready(function () {
         });
     })
 
+    //user account details update
+    $(".userAccountDetails").submit(function(){
+
+        $('.fa').addClass('fa-refresh fa-spin');
+
+        var userName = $("#user-name").val();
+        var userAddress = $("#user-address").val();
+        var userCity = $("#user-city").val();
+        var userState = $("#user-state").val();
+        var userCountry = $("#user-country").val();
+        var userPincode = $("#user-pincode").val();
+        var userMobile = $("#user-mobile").val();
+
+        $.ajax({
+            headers : {
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            },
+            type : 'POST',
+            url : '/user/account',
+            data: {
+               name : userName,
+               address : userAddress,
+               city : userCity,
+               state : userState,
+               country : userCountry,
+               pincode : userPincode,
+               mobile : userMobile
+            },
+            success: function(data){
+                if(data.status == true) {
+                    $('.fa').removeClass('fa-refresh fa-spin');
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                          toast.onmouseenter = Swal.stopTimer;
+                          toast.onmouseleave = Swal.resumeTimer;
+                        }
+                      });
+                      Toast.fire({
+                        icon: "success",
+                        title: data.message
+                      });
+
+                }else{
+                    $('.fa').removeClass('fa-refresh fa-spin');
+                    $.each(data.errors, function(prefix, val){
+                        $("#"+prefix+'_error').text(val[0]);
+                    });
+                }
+
+            },error: function(error){
+                console.log(error);
+            }
+        });
+    })
 
 });
 

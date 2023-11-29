@@ -25,17 +25,18 @@
         <div class="page-lostpassword">
             <h2 class="account-h2 u-s-m-b-20">Forgot Password ?</h2>
             <h6 class="account-h6 u-s-m-b-30">Enter your email below and we will send you a link to reset your password.</h6>
+            <h4 class="text-danger" id="error_message"></h4> <br>
             <form id="forgotForm" action="javascript:;">
                 <div class="w-50">
                     <div class="u-s-m-b-13">
                         <label for="user-name-email">Email
                             <span class="astk">*</span>
                         </label>
-                        <input type="text" id="forgot_email" class="text-field mb-1" placeholder="Email">
+                        <input type="email" required id="forgot_email" class="text-field mb-1" placeholder="Email">
                         <span id="email_error" class="text-danger "></span>
                 </div>
                 <div class="m-b-45">
-                    <button class="button button-outline-secondary w-100">Login</button>
+                    <button class="button button-outline-secondary w-100">Login  <i class="fa  " style="font-size: 15px;"></i></button>
                 </div>
                 <div class="page-anchor mt-2">
                     <a href="{{ url('user/login-register') }}">

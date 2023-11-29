@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Models\Sms;
 use App\Models\Cart;
 use App\Models\User;
+use App\Models\Country;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -28,6 +29,7 @@ class UsersController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
+
             $rules = array(
                 'email' => 'required|email|max:100|exists:users',
                 'password' => 'required',
@@ -79,7 +81,6 @@ class UsersController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-            logger($data);
 
             $rules = array(
                 'name' => 'required',
@@ -103,7 +104,7 @@ class UsersController extends Controller
             $user->email = $data['email'];
             $user->mobile = $data['mobile'];
             $user->password = Hash::make($data['password']);
-            $user->status = 1;
+            $user->status = 0;
             $user->save();
 
             //Activate the user only when user confirms his email account
@@ -161,11 +162,10 @@ class UsersController extends Controller
                 $messageData = ['name' => $userDetails->name, 'mobile' => $userDetails->mobile, 'email' => $userDetails->email];
                 Mail::send('emails.register', $messageData, function ($message) use ($email) {
                     $message->to($email)->subject('Welcome to our Building Business Site !');
-
                 });
 
-                  //Redirect the user to login register page witgh error message
-                  return redirect('user/login-register')->with(['success_message' => 'Your account is activated. You can login now.']);
+                //Redirect the user to login register page witgh error message
+                return redirect('user/login-register')->with(['success_message' => 'Your account is activated. You can login now.']);
             }
         } else {
             abort(404);
@@ -173,8 +173,9 @@ class UsersController extends Controller
     }
 
     //user forgot password
-    public function forgotPassword(Request $request){
-        if($request->ajax()){
+    public function forgotPassword(Request $request)
+    {
+        if ($request->ajax()) {
             $data = $request->all();
 
             $rules = array(
@@ -187,22 +188,74 @@ class UsersController extends Controller
                 return response()->json(['errors' => $validator->messages()]);
             }
 
+
             //generate new password
-            $userDetails = User::where('email',$data['email'])->first();
+            $userDetails = User::where('email', $data['email'])->first();
             $new_password = Str::random(16);
 
             //update new password
-            User::where('email',$data['email'])->update(['password' => bcrypt($new_password)]);
-
+            User::where('email', $data['email'])->update(['password' => bcrypt($new_password)]);
+            //get user details
+            $userDetails = User::where('email', $data['email'])->first()->toArray();
             //send email to user
             $email = $data['email'];
-        }else{
+            $messageData = ['name' => $userDetails['name'], 'email' => $userDetails['email'], 'password' => $new_password];
+            Mail::send('emails.user_forgot_password', $messageData, function ($message) use ($email) {
+                $message->to($email)->subject('New Password - Building Business');
+            });
+
+            return response()->json(['status' => true, 'message' => 'New password sent to your registered email']);
+        } else {
             return view('front.users.forgot_password');
         }
-
     }
 
+    //user account details
+    public function userAccount(Request $request){
+        if($request->ajax()){
+            $data = $request->all();
 
+            $rules = array(
+                'name' => 'required|string|max:100',
+                'address' => 'required|string|max:300',
+                'city' => 'required|string|max:100',
+                'state' => 'required|string|max:100',
+                'country' => 'required|string|max:100',
+                'pincode' => 'required|numeric|digits:12',
+                'mobile' => 'required|numeric|digits:12',
+
+            );
+
+            $validator = Validator::make($data, $rules);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->messages()]);
+            }
+
+            User::where('id',Auth::user()->id)->update([
+                'name' => $data['name'],
+                'address' => $data['address'],
+                'city' => $data['city'],
+                'state' => $data['state'],
+                'country' => $data['country'],
+                'pincode' => $data['pincode'],
+                'mobile' => $data['mobile'],
+            ]);
+
+            //redirect back with success message
+            $redirectTo = url('user/account');
+            return response()->json([
+                'status' => true,
+                'url' => $redirectTo,
+                'message' => 'Details has been updated successfully ! '
+            ]);
+
+
+        }else{
+            $countries = Country::where('status',1)->get()->toArray();
+            return view('front.users.user_account')->with(compact('countries'));
+        }
+    }
 
     //user logout
     public function userLogout()

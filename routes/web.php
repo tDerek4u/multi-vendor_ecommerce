@@ -208,6 +208,9 @@ Route::namespace('App\Http\Controllers\Front')->group(function(){
      //user login
      Route::post('user/login',[UsersController::class,'userLogin']);
 
+    //useraccount  details
+    Route::match(['get','post'],'user/account',[UsersController::class,'userAccount']);
+
       //user logout
     Route::get('user/logout',[UsersController::class,'userLogout']);
 
