@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Models\Sms;
 use App\Models\Cart;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -186,9 +187,15 @@ class UsersController extends Controller
                 return response()->json(['errors' => $validator->messages()]);
             }
 
-            $userDetails = User::where('email',$email)->first();
-            $new_password = 
+            //generate new password
+            $userDetails = User::where('email',$data['email'])->first();
+            $new_password = Str::random(16);
 
+            //update new password
+            User::where('email',$data['email'])->update(['password' => bcrypt($new_password)]);
+
+            //send email to user
+            $email = $data['email'];
         }else{
             return view('front.users.forgot_password');
         }
