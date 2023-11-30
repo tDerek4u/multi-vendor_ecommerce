@@ -257,7 +257,7 @@ $(document).ready(function () {
                         icon: "success",
                         title: data.message
                       });
-                    userEmail = "";
+                      $("#forgot_email").val("");
 
                 }else if(data.status == false){
                     $("#error_message").html(data.message);
@@ -333,6 +333,83 @@ $(document).ready(function () {
                 console.log(error);
             }
         });
+    })
+
+    //user password change
+     $("#passwordForm").keyup(function(){
+        var current_password = $("#user-current-password").val();
+
+        $.ajax({
+            headers : {
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            },
+            type : 'POST',
+            url : '/user/check-current-password',
+            data: {current_password: current_password},
+            success: function(resp){
+                if(resp.status == false){
+
+                    $("#check_password").html("<font color='red'>Current Password is Incorrect ! Make correct Current Password first ! </font>");
+                }else if(resp.status == true){
+
+                    $("#check_password").html("<font color='green'>Current Password is Correct !</font>");
+                }
+            },error: function(){
+                console.log('error');
+            }
+        });
+
+    })
+
+    $("#passwordForm").submit(function(){
+            var current_password = $("#user-current-password").val();
+            var new_password = $("#user-new-password").val();
+            var confirm_password = $("#user-confirm-password").val();
+
+            $('.fa').addClass('fa-refresh fa-spin');
+
+
+            $.ajax({
+                headers : {
+                    'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+                },
+                type : 'POST',
+                url : '/user/update/password',
+                data: { current_password , new_password , confirm_password},
+                success: function(resp){
+                    if(resp.status == false){
+                        $('.fa').removeClass('fa-refresh fa-spin');
+
+                        $.each(resp.errors,function(prefix,val){
+                            $("#"+prefix+"_error").text(val[0]);
+                        })
+                    }else if(resp.status == true){
+                        $('.fa').removeClass('fa-refresh fa-spin');
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                              toast.onmouseenter = Swal.stopTimer;
+                              toast.onmouseleave = Swal.resumeTimer;
+                            }
+                          });
+                          Toast.fire({
+                            icon: "success",
+                            title: resp.message
+                          });
+
+                        $("#user-current-password").val("");
+                        $("#user-new-password").val("");
+                        $("#user-confirm-password").val("");
+
+                    }
+                },error: function(){
+                    console.log('error');
+                }
+            });
     })
 
 });
@@ -412,6 +489,7 @@ function myFunction_log_password_con() {
         x.type = "password";
     }
 }
+
 
 
 // $(document).ready(function () {

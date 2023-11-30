@@ -211,6 +211,12 @@ Route::namespace('App\Http\Controllers\Front')->group(function(){
     //useraccount  details
     Route::match(['get','post'],'user/account',[UsersController::class,'userAccount']);
 
+      //Check Admin Password
+      Route::post('/user/check-current-password',[UsersController::class,'checkUserPassword']);
+
+      //user update password
+    Route::post('user/update/password',[UsersController::class,'updatePassword']);
+
       //user logout
     Route::get('user/logout',[UsersController::class,'userLogout']);
 

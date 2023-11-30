@@ -178,6 +178,8 @@ class UsersController extends Controller
         if ($request->ajax()) {
             $data = $request->all();
 
+
+
             $rules = array(
                 'email' => 'required|email|exists:users',
             );
@@ -189,22 +191,26 @@ class UsersController extends Controller
             }
 
 
-            //generate new password
-            $userDetails = User::where('email', $data['email'])->first();
-            $new_password = Str::random(16);
+                  //generate new password
+                $userDetails = User::where('email', $data['email'])->first();
+                $new_password = Str::random(16);
 
-            //update new password
-            User::where('email', $data['email'])->update(['password' => bcrypt($new_password)]);
-            //get user details
-            $userDetails = User::where('email', $data['email'])->first()->toArray();
-            //send email to user
-            $email = $data['email'];
-            $messageData = ['name' => $userDetails['name'], 'email' => $userDetails['email'], 'password' => $new_password];
-            Mail::send('emails.user_forgot_password', $messageData, function ($message) use ($email) {
-                $message->to($email)->subject('New Password - Building Business');
-            });
+                //update new password
+                User::where('email', $data['email'])->update(['password' => bcrypt($new_password)]);
+                //get user details
+                $userDetails = User::where('email', $data['email'])->first()->toArray();
+                //send email to user
+                $email = $data['email'];
+                $messageData = ['name' => $userDetails['name'], 'email' => $userDetails['email'], 'password' => $new_password];
+                Mail::send('emails.user_forgot_password', $messageData, function ($message) use ($email) {
+                    $message->to($email)->subject('New Password - Building Business');
+                });
 
-            return response()->json(['status' => true, 'message' => 'New password sent to your registered email']);
+                return response()->json(['status' => true, 'message' => 'New password sent to your registered email']);
+
+
+
+
         } else {
             return view('front.users.forgot_password');
         }
@@ -232,6 +238,8 @@ class UsersController extends Controller
                 return response()->json(['errors' => $validator->messages()]);
             }
 
+
+
             User::where('id',Auth::user()->id)->update([
                 'name' => $data['name'],
                 'address' => $data['address'],
@@ -254,6 +262,57 @@ class UsersController extends Controller
         }else{
             $countries = Country::where('status',1)->get()->toArray();
             return view('front.users.user_account')->with(compact('countries'));
+        }
+    }
+
+    //user check password
+    public function checkUserPassword(Request $request){
+       if($request->ajax()){
+            $data = $request->all();
+
+            if(Hash::check($data['current_password'],Auth::user()->password)){
+                return response()->json(['status' => true]);
+            }else{
+                //false
+                return response()->json(['status' => false]);
+            }
+       }
+    }
+
+    //user update password
+    public function updatePassword(Request $request){
+        if($request->ajax()){
+            $data = $request->all();
+
+            logger($data);
+
+           $rules = array(
+            'current_password' => 'required',
+            'new_password' =>
+            'required|min:6|regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@]).*$/',
+            'confirm_password' => 'required|same:new_password'
+
+           );
+
+           $validator = Validator::make($data, $rules);
+
+           if ($validator->fails()) {
+               return response()->json(['status' => false ,'errors' => $validator->messages()]);
+           }
+
+            $current_password = $data['current_password'];
+            $checkPassword = User::where('id',Auth::user()->id)->first();
+           if(Hash::check($current_password,$checkPassword->password)){
+                //update user current password
+                $user = User::find(Auth::user()->id);
+                $user->password = bcrypt($data['new_password']);
+                $user->save();
+
+                return response()->json(['status' => true,'message' => 'Password changed successfully. ']);
+           }else{
+                return response()->json(['status' => false,'message' => 'Your current password is Incorrect ! ']);
+           }
+
         }
     }
 

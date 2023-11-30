@@ -28,7 +28,7 @@
                 <!-- Account -->
                 <div class="col-lg-6">
                     <div class="">
-                            <form class="userAccountDetails" action="javascript:;" id="login-form">
+                            <form class="userAccountDetails" action="javascript:;" id="userAccountDetails">
                                 @csrf
                                 <h2 class="account-h2 u-s-m-b-20">Update Contact Details</h2>
                                 <h4 class="text-danger" id="error_message"></h4> <br>
@@ -116,7 +116,7 @@
 
                 <div class="col-lg-6">
                     <div class="">
-                            <form class="userLoginForm" action="javascript:;" id="login-form">
+                            <form class="passwordForm" action="javascript:;" id="passwordForm">
                                 @csrf
                                 <h2 class="account-h2 u-s-m-b-20">Update Password</h2>
                                 <h4 class="text-danger" id="error_message"></h4> <br>
@@ -125,25 +125,29 @@
                                     <label for="user-current-password">Current Password
                                         <span class="astk">*</span>
                                     </label>
-                                    <input type="password" id="user-current-password"  class="text-field" >
+                                    <input type="password" id="user-current-password" class="text-field mb-2" >
+                                    <span id="check_password" class="mt-3"></span>
+                                    <span id="current_password_error" class="text-danger "></span>
                                 </div>
 
                                 <div class="u-s-m-b-30">
                                     <label for="user-new-password">New Password
                                         <span class="astk">*</span>
                                     </label>
-                                    <input type="password" id="user-new-password"  class="text-field" >
+                                    <input type="password" id="user-new-password"  class="text-field false" >
+                                    <span id="new_password_error" class="text-danger"></span>
                                 </div>
 
                                 <div class="u-s-m-b-30">
                                     <label for="user-confirm-password">Confirm Password
                                         <span class="astk">*</span>
                                     </label>
-                                    <input type="password" id="user-confirm-password"  class="text-field" >
+                                    <input type="password" id="user-confirm-password"  class="text-field false" >
+                                    <span id="confirm_password_error" class="text-danger"></span>
                                 </div>
 
                                 <div class="m-b-45">
-                                    <button class="button button-primary w-100">Update</button>
+                                    <button class="button button-primary w-100">Update <i class="fa  " style="font-size: 15px;"></i></button>
                                 </div>
                             </form>
                     </div>
